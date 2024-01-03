@@ -101,7 +101,7 @@ def login(request):
         if master.Password == request.POST['password']:
             request.session['email'] = master.Email
 
-            send_otp(request)
+            # send_otp(request)
 
             return redirect(profile_page)
         else:
@@ -128,7 +128,36 @@ def load_profile(request):
 
 # END: GET PROFILE DATA
 
+import os
+# profile image update
+def upload_profile_image(request):
+    master = Master.objects.get(Email=request.session['email'])
+    user = UserProfile.objects.get(Master = master)
 
+    image_name = request.FILES['profile_image'].name
+    img_ext = image_name.split('.')[-1]
+
+    image_new_name = f"{master.Email.split('@')[0]}_{user.Mobile}.{img_ext}"
+    print(image_new_name)
+
+    image = request.FILES['profile_image']
+    image.name = image_new_name
+
+    image_path = os.path.join(settings.MEDIA_ROOT, 'profile_images')
+    
+    for file in os.scandir(image_path):
+        if file.name == image.name:
+            del_file = os.path.join(image_path, file.name)
+            os.remove(del_file)
+        
+        print(file.name)
+
+    user.ProfileImage = image
+    user.save()
+
+    # print(request.FILES['profile_image'])
+
+    return redirect(profile_page)
 
 # profile_update_functionality
 def profile_update(request):
