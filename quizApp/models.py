@@ -20,3 +20,54 @@ class UserProfile(models.Model):
     State = models.CharField(max_length=25, null=True, default='')
     Country = models.CharField(max_length=25, null=True, default='')
     Pincode = models.CharField(max_length=25, null=True, default='')
+
+# model for quiz and options
+
+class QuizCategory(models.Model):
+    Category = models.CharField(max_length=100)
+
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
+
+
+difficulty_level_choices = (
+    ('easy', 'easy'),
+    ('mid', 'midium'),
+    ('hrd', 'hard')
+)
+
+remark_level_choices = (
+    (25, 'poor'),
+    (50, 'average'),
+    (75, 'good')
+    (100, 'excellent')
+)
+
+class Quiz(models.Model):
+    UserProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    Category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE)
+    Subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+
+    Title = models.CharField(max_length=100)
+    Duration = models.IntegerField(default=0)
+    DifficultyLevel = models.CharField(choices=difficulty_level_choices)
+    TotalScore = models.IntegerField()
+    RemarkLevel = models.CharField(choices=remark_level_choices)
+
+class QuesAns(models.Model):
+    Quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    QuesImage = models.FileField(upload_to='ques_images/', default='avatar.png')
+
+    Question = models.TextField(max_length=2500)
+    Options = models.TextField(max_length=255)
+    
+    IsMultiSelect = models.BooleanField(default=False)
+
+    Answer = models.CharField(max_length=25)
+
+class QuizPlay(models.Model):
+    QuesAns = models.ForeignKey(QuesAns, on_delete=models.CASCADE)
+    UserProfile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+
+    Score = models.IntegerField()
+    Remark = models.CharField(max_length=10)
