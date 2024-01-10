@@ -13,6 +13,8 @@ urlpatterns = [
     path('profile_page/', profile_page, name='profile_page'),
     path('profile_update/', profile_update, name='profile_update'),
     path('upload_profile_image/', upload_profile_image, name='upload_profile_image'),
+    path('change_password/', change_password, name='change_password'),
+    
     
     path('logout/', logout, name='logout'),
 ]

@@ -45,6 +45,9 @@ def verify_otp(request):
 #### START: VIEWS FOR PAGES ONLY ####
 
 def index(request): # refer it as login_page
+    if 'email' in request.session:
+        load_profile(request)
+        return render(request, profile_page_link, default_data)
     return render(request, login_page_link)
 
 # register_page
@@ -182,6 +185,21 @@ def profile_update(request):
     
     return redirect(profile_page)
 
+
+# CHANGE PASSWORD
+def change_password(request):
+    master = Master.objects.get(Email=request.session['email'])
+    if master.Password == request.POST['current_pwd']:
+        if request.POST['new_pwd'] == request.POST['re_new_pwd']:
+            master.Password = request.POST['new_pwd']
+            master.save()
+            print('password has been changed.')
+        else:
+            print('new password and repeat password must be same.')
+    else:
+        print('current password not matched.')
+    
+    return redirect(profile_page)
 # LOGOUT
 def logout(request):
     if 'email' in request.session:
