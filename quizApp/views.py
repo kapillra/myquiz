@@ -117,6 +117,12 @@ def login(request):
 
 # END: LOGIN FUNCTIONALITY
 
+for gc in gender_choices:
+    {
+        'm': 'male',
+        'f': 'female'
+    }
+    print(gc)
 
 # START: GET PROFILE DATA
 def load_profile(request):
@@ -128,6 +134,19 @@ def load_profile(request):
 
 
     default_data['user_profile'] = user
+    
+    default_data['gender_choices'] = dict()
+    
+    for gc in gender_choices:
+        default_data['gender_choices'].setdefault(gc[0], gc[1])
+    
+
+    default_data['quiz_preset_data'] = {
+        'categories': QuizCategory.objects.all(),
+        'subjects': Subject.objects.all(),
+    }
+
+    default_data['my_quizes'] = Quiz.objects.filter(UserProfile=user)
 
 # END: GET PROFILE DATA
 
@@ -200,6 +219,27 @@ def change_password(request):
         print('current password not matched.')
     
     return redirect(profile_page)
+
+# CREATE NEW QUIZ
+def create_quiz(request):
+    master = Master.objects.get(Email=request.session['email'])
+    user = UserProfile.objects.get(Master=master)
+    
+    subject = Subject.objects.get(pk=int(request.POST['subject']))
+    category = QuizCategory.objects.get(pk=int(request.POST['category']))
+
+    Quiz.objects.create(
+        UserProfile = user,
+        Category = category,
+        Subject = subject,
+        Title = request.POST['quiz_title'],
+        Duration = request.POST['duration'],
+        DifficultyLevel = request.POST['difficulty_level'],
+        TotalScore = request.POST['total_score'],
+    )
+
+    return redirect(profile_page)
+
 # LOGOUT
 def logout(request):
     if 'email' in request.session:

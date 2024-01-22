@@ -10,7 +10,8 @@ class Master(models.Model):
 
 gender_choices = (
     ('m', 'male'),
-    ('f', 'female')
+    ('f', 'female'),
+    ('o', 'other'),
 )
 class UserProfile(models.Model):
     Master = models.ForeignKey(Master, on_delete=models.CASCADE)
@@ -46,9 +47,9 @@ class Subject(models.Model):
 
 
 difficulty_level_choices = (
-    ('easy', 'easy'),
-    ('mid', 'midium'),
-    ('hrd', 'hard')
+    ('1', 'easy'),
+    ('2', 'midium'),
+    ('3', 'hard')
 )
 
 

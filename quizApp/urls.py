@@ -16,5 +16,8 @@ urlpatterns = [
     path('change_password/', change_password, name='change_password'),
     
     
+    path('create_quiz/', create_quiz, name='create_quiz'),
+    
+    
     path('logout/', logout, name='logout'),
 ]
