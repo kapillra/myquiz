@@ -145,8 +145,13 @@ def load_profile(request):
         'categories': QuizCategory.objects.all(),
         'subjects': Subject.objects.all(),
     }
+    
+    myquizes = Quiz.objects.filter(UserProfile=user)
+    
+    for myquiz in myquizes:
+        myquiz.TotalQuestions = len(QuesAns.objects.filter(Quiz=myquiz))
 
-    default_data['my_quizes'] = Quiz.objects.filter(UserProfile=user)
+    default_data['my_quizes'] = myquizes
 
 # END: GET PROFILE DATA
 
