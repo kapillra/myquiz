@@ -245,6 +245,23 @@ def create_quiz(request):
 
     return redirect(profile_page)
 
+# ADD OPTIONS TO QUIZES
+def add_options(request):
+    master = Master.objects.get(Email=request.session['email'])
+    user = UserProfile.objects.get(Master=master)
+
+    quiz = Quiz.objects.get(
+        UserProfile = user
+    )
+
+    QuesAns.objects.create(
+        Quiz = quiz,
+        Question = request.POST['question'],
+        Options = request.POST['options']
+    )
+
+    return redirect(profile_page)
+
 # LOGOUT
 def logout(request):
     if 'email' in request.session:
