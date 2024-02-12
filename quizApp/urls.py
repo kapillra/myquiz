@@ -17,6 +17,7 @@ urlpatterns = [
     
     
     path('create_quiz/', create_quiz, name='create_quiz'),
+    path('add_options/<int:id>/', add_options, name='add_options'),
     
     
     path('logout/', logout, name='logout'),

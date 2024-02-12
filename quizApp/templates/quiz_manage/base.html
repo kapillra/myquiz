@@ -72,8 +72,15 @@
                 $('.delete-field').click(function() {
                     $(this).parent('.option').remove();
                 });
+
+                
             });
             
+            $('.quiz-item').click(function() {
+                var id = $(this).attr('quiz-id');
+                var url = `/add_options/${id}/`;
+                $('#questionModal').find('form').attr('action', url);
+            });
             
         })
     </script>

@@ -1339,7 +1339,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-							<form method="post" action="{% url 'change_password' %}">
+							<form method="post" action="">
 								{% csrf_token %}
 								<div class="row">
 									<div class="mb-3 col-md-12">
@@ -1369,8 +1369,8 @@
 									<div class="mb-3 col-md-5">
 										<select class="form-control default-select" name="set_answer" id="set_answer">
 											<option selected="">Set Answer...</option>
-											<option>Option A</option>
-											<option>Option B</option>
+											<option value="0">Option A</option>
+											<option value="1">Option B</option>
 										</select>
 									</div>
 

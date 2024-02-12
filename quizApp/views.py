@@ -246,18 +246,26 @@ def create_quiz(request):
     return redirect(profile_page)
 
 # ADD OPTIONS TO QUIZES
-def add_options(request):
+def add_options(request, id):
     master = Master.objects.get(Email=request.session['email'])
     user = UserProfile.objects.get(Master=master)
 
     quiz = Quiz.objects.get(
+        id = id,
         UserProfile = user
     )
+
+    options = []
+    for d in request.POST:
+        if d.startswith('option'):
+            options.append(request.POST[d])
+    options = '|'.join(options)
 
     QuesAns.objects.create(
         Quiz = quiz,
         Question = request.POST['question'],
-        Options = request.POST['options']
+        Options = options,
+        Answer = request.POST['set_answer'],
     )
 
     return redirect(profile_page)
