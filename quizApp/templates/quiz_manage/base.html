@@ -76,13 +76,52 @@
                 
             });
             
-            $('.quiz-item').click(function() {
+            $('.quiz-item .add-new').click(function() {
                 var id = $(this).attr('quiz-id');
                 var url = `/add_options/${id}/`;
                 $('#questionModal').find('form').attr('action', url);
             });
             
-        })
+            $('.quiz-item .view-ques').click(function() {
+                
+                var id = $(this).attr('quiz-id');
+                var url = `http://127.0.0.1:8000/fetch_questions/${id}/`;
+                
+                $.ajax({
+                    url: url,
+                    method: 'get',
+                    success: function(data) {
+                        var dom = ''
+                        var c = 1
+                        // for (var i = 0; i <= data.length; i++) {}
+                        for (var i of data.ques_ans){
+                            dom += `<li>
+											<div class="timeline-panel">
+												<div class="media me-2">
+													${c}
+												</div>
+												<div class="media-body">
+													<h5 class="mb-1">${i.question}</h5>
+													<p class="mb-1">${i.options.split('|')}</p>
+													<a href="#" class="btn btn-primary btn-xxs shadow">Edit</a>
+													<a href="#" class="btn btn-outline-danger btn-xxs">Delete</a>
+												</div>
+											</div>
+										</li>`
+                                c+=1
+                                
+                            console.log(i.question)
+                            console.log(i.options.split('|'))
+                        }
+                        $('#questionViewModal').find('.timeline').html(dom);
+                        
+                    },
+                    error: function(err) {
+                        console.log(err)
+                    }
+                });
+            });
+        });
     </script>
     
 </body>
